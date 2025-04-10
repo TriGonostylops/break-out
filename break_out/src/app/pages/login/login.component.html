@@ -2,20 +2,29 @@
   <mat-card>
     <mat-card-title>Login</mat-card-title>
     <mat-card-content>
-      <form>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <mat-form-field appearance="fill">
           <mat-label>Email</mat-label>
-          <input matInput type="email" required />
+          <input matInput type="email" formControlName="email" required />
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
-          <input matInput type="password" required />
+          <input matInput type="password" formControlName="password" required />
         </mat-form-field>
 
         <div class="actions">
-          <button mat-raised-button color="primary" type="submit">Login</button>
-          <button mat-button type="reset">Reset</button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="loginForm.invalid"
+          >
+            Login
+          </button>
+          <button mat-button type="reset" (click)="loginForm.reset()">
+            Reset
+          </button>
         </div>
       </form>
     </mat-card-content>
