@@ -1,21 +1,29 @@
+// src/app/pages/game/game.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MapService } from '../../services/map.service';
+import { GameMap } from '../../models/map.interface';
 import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [MatCardModule, CommonModule],
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  mapId!: string;
+  map!: GameMap;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private mapService: MapService) {}
 
   ngOnInit(): void {
-    // Retrieve the selected map's id from the route parameters
-    this.mapId = this.route.snapshot.paramMap.get('id')!;
+    const mapId = this.route.snapshot.paramMap.get('id')!;
+    this.mapService.getMapById(mapId).subscribe((map) => {
+      if (map) {
+        this.map = map;
+      }
+    });
   }
 }

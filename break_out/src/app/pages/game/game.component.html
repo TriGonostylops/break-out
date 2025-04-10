@@ -1,8 +1,17 @@
 <mat-card>
-    <mat-card-title>Game Screen</mat-card-title>
+    <mat-card-header>
+      <mat-card-title>{{ map?.name }}</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
-      <p>Starting game with map: {{ mapId }}</p>
-      <!-- Future game logic goes here -->
+      <p>{{ map?.description }}</p>
+      <div class="grid-container">
+        <div *ngFor="let row of map?.grid" class="grid-row">
+          <div *ngFor="let tile of row" class="grid-tile" [class.passable]="tile.passable" [class.blocked]="!tile.passable">
+            <!-- Optionally display coordinates -->
+            {{ tile.x }},{{ tile.y }}
+          </div>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
   
