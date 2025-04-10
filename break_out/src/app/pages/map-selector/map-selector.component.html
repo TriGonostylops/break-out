@@ -1,0 +1,13 @@
+<div class="map-selector-container">
+    <h2>Select Your Map</h2>
+    <div class="map-list">
+      <mat-card *ngFor="let map of maps" class="map-card" (click)="selectMap(map)">
+        <img mat-card-image [src]="map.imageUrl" alt="{{ map.name }}" />
+        <mat-card-header>
+          <mat-card-title>{{ map.name }}</mat-card-title>
+          <mat-card-subtitle>{{ map.description }}</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  </div>
+  
