@@ -29,6 +29,7 @@ export class MapService {
       description: 'Urban level filled with puzzles amidst skyscrapers.',
       imageUrl: 'maps/cityscape.png',
       grid: this.createGrid(10, 10),
+      spawnPoint: { x: 0, y: 0 }, 
     },
     {
       id: 'map2',
@@ -36,6 +37,7 @@ export class MapService {
       description: 'A mysterious forest level hiding secret challenges.',
       imageUrl: 'maps/forest.png',
       grid: this.createGrid(10, 10),
+      spawnPoint: { x: 0, y: 0 }, 
     },
     {
       id: 'map3',
@@ -43,6 +45,7 @@ export class MapService {
       description: 'A sprawling desert level with hidden treasures.',
       imageUrl: '/maps/desert.png',
       grid: this.createGrid(10, 10),
+      spawnPoint: { x: 0, y: 0 }, 
     },
   ];
 

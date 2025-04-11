@@ -6,5 +6,6 @@ export interface GameMap {
     description: string;
     imageUrl: string; 
     grid: Tile[][]; 
+    spawnPoint: { x: number; y: number }; 
   }
   
