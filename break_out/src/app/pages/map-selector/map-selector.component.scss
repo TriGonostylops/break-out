@@ -1,22 +1,50 @@
+/* Updated styles for the map selector component */
 .map-selector-container {
-    text-align: center;
-    padding: 2rem;
-  }
-  
-  .map-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-  }
-  
-  .map-card {
-    width: 300px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  
-  .map-card:hover {
-    transform: scale(1.05);
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.map-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.map-card {
+  background-color: #333;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 1rem;
+}
+
+.map-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.map-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.map-card mat-card-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #add8e6; 
+  margin-bottom: 0.5rem; 
+}
+
+.map-card mat-card-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+}

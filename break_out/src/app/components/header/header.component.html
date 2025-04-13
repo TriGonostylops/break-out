@@ -1,9 +1,12 @@
 <header>
-    <nav>
-        <span routerLink="/"> {{title}} </span>
-        <ul>
-            <li routerLink="authenticate">Authenticate</li>
-            <li routerLink="map-selector">Game</li>
-        </ul>
-    </nav>
+  <nav>
+    <a routerLink="/" class="logo-link">
+      <img src="logo_v1.webp" alt="Logo" class="logo" />
+      <span routerLinkActive="active"> {{ title }} </span>
+    </a>
+    <ul>
+      <li routerLink="authenticate" routerLinkActive="active">Authenticate</li>
+      <li routerLink="map-selector" routerLinkActive="active">Game</li>
+    </ul>
+  </nav>
 </header>

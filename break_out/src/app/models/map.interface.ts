@@ -1,11 +1,10 @@
 import { Tile } from './tile.interface';
 
 export interface GameMap {
-    id: string;
-    name: string;
-    description: string;
-    imageUrl: string; 
-    grid: Tile[][]; 
-    spawnPoint: { x: number; y: number }; 
-  }
-  
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  grid: Tile[][];
+  spawnPoint: { x: number; y: number };
+}
