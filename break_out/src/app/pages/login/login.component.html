@@ -19,10 +19,16 @@
             color="primary"
             type="submit"
             [disabled]="loginForm.invalid"
+            class="login-button"
           >
             Login
           </button>
-          <button mat-button type="reset" (click)="loginForm.reset()">
+          <button
+            mat-button
+            type="reset"
+            (click)="loginForm.reset()"
+            class="reset-button"
+          >
             Reset
           </button>
         </div>
