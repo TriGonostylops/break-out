@@ -1,54 +1,127 @@
 .grid-container {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-top: 1rem;
+  gap: 5px;
+  margin: 0 auto;
+  max-width: 90vw;
+  overflow-x: auto;
 }
 
 .grid-row {
   display: flex;
-  gap: 2px;
+  gap: 5px;
 }
 
 .grid-tile {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #ccc;
-  position: relative;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+
+  &.passable {
+    background-color: #e0ffe0;
+  }
+
+  &.blocked {
+    background-color: #ffe0e0;
+  }
+
+  &.interactable-tile {
+    border: 2px solid #007bff;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.1);
+      background-color: #d0f0ff;
+    }
+  }
 }
 
-.grid-tile.passable {
-  background-color: #e0f7fa;
-}
-
-.grid-tile.blocked {
-  background-color: #ffebee;
-}
-
-/* Style for the player marker overlay */
 .player-marker {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
+
+  img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
 }
 
-.player-marker img {
-  max-width: 100%;
-  max-height: 100%;
+.tile-avatar-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 768px) {
+  .highlight-title {
+    font-size: 1.6rem;
+  }
+
+  .highlight-description {
+    font-size: 1.2rem;
+  }
+
+  .grid-tile {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .highlight-title {
+    font-size: 1.4rem;
+  }
+
+  .highlight-description {
+    font-size: 1rem;
+  }
+
+  .grid-tile {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 mat-icon {
   font-size: 16px;
   color: #333;
+}
+
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.highlight-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #007bff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.highlight-description {
+  font-size: 1.4rem;
+  color: #555;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
 }

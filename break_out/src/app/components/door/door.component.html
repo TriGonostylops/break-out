@@ -3,12 +3,12 @@
   <p>{{ output }}</p>
   <mat-form-field appearance="fill" class="input-field">
     <mat-label>Password</mat-label>
-    <input matInput [(ngModel)]="inputPassword" type="password" />
+    <input matInput [(ngModel)]="inputPassword" type="text" />
   </mat-form-field>
   <button
     mat-raised-button
     color="primary"
-    class="door-button"
+    class="door-button rounded-button"
     (click)="verifyPassword()"
   >
     Unlock Door

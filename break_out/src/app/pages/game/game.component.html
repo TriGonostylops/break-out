@@ -1,11 +1,11 @@
 <!-- src/app/pages/game/game.component.html -->
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>{{ map.name }}</mat-card-title>
+  <mat-card-header class="center-content">
+    <mat-card-title class="highlight-title">{{ map.name }}</mat-card-title>
     <app-timer></app-timer>
   </mat-card-header>
-  <mat-card-content>
-    <p>{{ map.description }}</p>
+  <mat-card-content class="center-content">
+    <p class="highlight-description">{{ map.description }}</p>
     <div class="grid-container">
       <div *ngFor="let row of map?.grid" class="grid-row">
         <div

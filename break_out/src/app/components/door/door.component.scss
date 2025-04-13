@@ -1,8 +1,8 @@
 .door-container {
   padding: 1rem;
   text-align: center;
-  background-color: #2c2c2c; // Dark gray background
-  color: #ffffff; // White text
+  background-color: #2c2c2c; 
+  color: #ffffff; 
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -11,7 +11,7 @@
 .input-field {
   width: 100%;
   margin-bottom: 1rem;
-  background-color: #706f6f; // Light gray input field
+  background-color: #706f6f; 
   border-radius: 4px;
 }
 
@@ -21,12 +21,12 @@ button {
 
 .door-button {
   margin: 10px;
-  background-color: #4caf50; // Green button
+  background-color: #4caf50; 
   color: #ffffff;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #45a049; // Darker green on hover
+    background-color: #45a049; 
   }
 }
 
@@ -35,6 +35,10 @@ button {
   transition: transform 0.3s ease;
 
   &:hover {
-    transform: scale(1.1); // Slight zoom effect on hover
+    transform: scale(1.1); 
   }
+}
+
+.rounded-button {
+  border-radius: 20px; 
 }
