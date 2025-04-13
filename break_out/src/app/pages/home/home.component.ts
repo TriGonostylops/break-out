@@ -13,7 +13,6 @@ export class HomeComponent {
   constructor(private router: Router) {}
 
   startGame(): void {
-    // Navigate to the Map Selector page
     this.router.navigate(['/map-selector']);
   }
 }

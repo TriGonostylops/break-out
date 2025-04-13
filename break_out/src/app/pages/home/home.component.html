@@ -8,12 +8,8 @@
       <p>
         BreakOut is an exciting game where players use the WASD keys to navigate
         through challenging puzzles. Your goal is to solve puzzles.
-         
       </p>
-        <p>
-          Technical requirements:
-
-        </p>
+      <p>Technical requirements:</p>
       <ul>
         <li>
           Responsive, mobile-first design ensuring a great experience on all
@@ -34,7 +30,14 @@
       </p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-stroked-button color="accent" (click)="startGame()">Start Game</button>
+      <button
+        mat-stroked-button
+        color="accent"
+        class="start-game"
+        (click)="startGame()"
+      >
+        Start Game
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>
