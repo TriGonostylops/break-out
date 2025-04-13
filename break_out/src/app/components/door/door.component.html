@@ -1,0 +1,25 @@
+<div class="door-container">
+  <h2>Door Terminal</h2>
+  <p>{{ output }}</p>
+  <mat-form-field appearance="fill" class="input-field">
+    <mat-label>Password</mat-label>
+    <input matInput [(ngModel)]="inputPassword" type="password" />
+  </mat-form-field>
+  <button
+    mat-raised-button
+    color="primary"
+    class="door-button"
+    (click)="verifyPassword()"
+  >
+    Unlock Door
+  </button>
+  <button
+    mat-icon-button
+    class="hint-button"
+    (click)="toggleHint()"
+    aria-label="Toggle hint"
+  >
+    ?
+  </button>
+  <p *ngIf="showHint">Enter (the) password</p>
+</div>

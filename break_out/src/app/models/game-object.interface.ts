@@ -1,7 +1,7 @@
 export interface GameObject {
     id: string;
-    type: 'puzzle' | 'obstacle' | 'collectible';
+    type: 'puzzle' | 'obstacle' | 'collectible' | 'door';
     interactable: boolean;
-    // Optionally add properties like image, description, or effects
+    avatarUrl?: string;
   }
   

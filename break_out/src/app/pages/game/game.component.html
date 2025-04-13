@@ -1,3 +1,4 @@
+<!-- src/app/pages/game/game.component.html -->
 <mat-card>
   <mat-card-header>
     <mat-card-title>{{ map.name }}</mat-card-title>
@@ -7,18 +8,42 @@
     <p>{{ map.description }}</p>
     <div class="grid-container">
       <div *ngFor="let row of map?.grid" class="grid-row">
-        <div *ngFor="let tile of row" class="grid-tile" [class.passable]="tile.passable" [class.blocked]="!tile.passable">
-          <!-- Optionally display coordinates -->
-          {{ tile.x }},{{ tile.y }}
-          <!-- Insert player marker if this tile matches the player's position -->
-          <ng-container *ngIf="tile.x === player.position.x && tile.y === player.position.y">
+        <div
+          *ngFor="let tile of row"
+          class="grid-tile"
+          [class.passable]="tile.passable"
+          [class.blocked]="!tile.passable"
+          [ngClass]="{ 'interactable-tile': tile.gameObject?.interactable }"
+          [ngStyle]="{
+            cursor: tile.gameObject?.interactable ? 'pointer' : 'default'
+          }"
+          (click)="onTileClick(tile)"
+        >
+          <ng-container
+            *ngIf="tile.x === player.position.x && tile.y === player.position.y"
+          >
             <div class="player-marker">
-              <img *ngIf="player.avatarUrl; else defaultIcon" [src]="player.avatarUrl" alt="avatar" />
+              <img
+                *ngIf="player.avatarUrl; else defaultIcon"
+                [src]="player.avatarUrl"
+                alt="avatar"
+              />
               <ng-template #defaultIcon>
                 <mat-icon>person</mat-icon>
               </ng-template>
             </div>
           </ng-container>
+          <!-- Optionally display tile's avatarUrl if available -->
+          <div
+            *ngIf="tile.gameObject && tile.gameObject.avatarUrl"
+            class="tile-avatar-container"
+          >
+            <img
+              [src]="tile.gameObject.avatarUrl"
+              alt="tile avatar"
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -28,7 +28,16 @@ export class MapService {
       name: 'Cityscape',
       description: 'Urban level filled with puzzles amidst skyscrapers.',
       imageUrl: 'maps/cityscape.png',
-      grid: this.createGrid(10, 10),
+      grid: (() => {
+        const grid = this.createGrid(10, 10);
+        grid[0][9].gameObject = {
+          id: 'door1',
+          type: 'door',
+          interactable: true,
+          avatarUrl: 'maps/door.webp', 
+        };
+        return grid;
+      })(),
       spawnPoint: { x: 0, y: 0 }, 
     },
     {
