@@ -9,6 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../firebase/firebase';
 
 @Component({
   selector: 'app-register',
@@ -35,10 +37,21 @@ export class RegisterComponent {
     });
   }
 
-  onRegister() {
+  async onRegister() {
     if (this.registerForm.valid) {
       console.log('Register data:', this.registerForm.value);
-      // Handle registration logic here
+      if(this.registerForm.value.password !== this.registerForm.value.confirmPassword) {
+        console.error('Passwords do not match');
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, this.registerForm.value.email, this.registerForm.value.password);
+        console.log('User registered:', userCredential.user);
+        // Additional logic (e.g., saving user data to Firestore) can go here.
+      } catch (error) {
+        console.error('Registration error:', error);
+      }
     }
   }
 }
