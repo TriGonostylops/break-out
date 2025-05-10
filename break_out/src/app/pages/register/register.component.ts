@@ -30,7 +30,6 @@ export class RegisterComponent {
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
-      username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
@@ -48,7 +47,6 @@ export class RegisterComponent {
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, this.registerForm.value.email, this.registerForm.value.password);
         console.log('User registered:', userCredential.user);
-        // Additional logic (e.g., saving user data to Firestore) can go here.
       } catch (error) {
         console.error('Registration error:', error);
       }

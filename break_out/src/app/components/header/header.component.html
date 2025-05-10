@@ -5,8 +5,14 @@
       <span routerLinkActive="active"> {{ title }} </span>
     </a>
     <ul>
-      <li routerLink="authenticate" routerLinkActive="active">Authenticate</li>
-      <li routerLink="map-selector" routerLinkActive="active">Game</li>
+    
+      <li routerLink="map-selector">Game</li>
+      <li *ngIf="!isLoggedIn" routerLink="authenticate">
+        Authenticate
+      </li>
+      <li *ngIf="isLoggedIn" (click)="logout()">
+        Logout
+      </li>
     </ul>
   </nav>
 </header>
