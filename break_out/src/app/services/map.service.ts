@@ -7,6 +7,12 @@ import { Tile } from '../models/tile.interface';
   providedIn: 'root',
 })
 export class MapService {
+  private mapPasswords: { [mapId: string]: string } = {
+    map1: 'password',
+    map2: 'forest42',
+    map3: 'sandstorm'
+  };
+
   private createGrid(rows: number, cols: number): Tile[][] {
     let grid: Tile[][] = [];
     for (let x = 0; x < rows; x++) {
@@ -64,5 +70,8 @@ export class MapService {
   getMapById(id: string): Observable<GameMap | undefined> {
     const found = this.maps.find(m => m.id === id);
     return of(found);
+  }
+  getPasswordForMap(mapId: string): string | undefined {
+    return this.mapPasswords[mapId];
   }
 }

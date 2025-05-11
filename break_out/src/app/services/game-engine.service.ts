@@ -8,14 +8,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DoorComponent } from '../components/door/door.component';
 import { getAuth } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, DocumentData } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
+import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameEngineService {
-  constructor(private playerService: PlayerService) {}
+  constructor(
+    private playerService: PlayerService,
+    private mapService: MapService
+  ) {}
 
   movePlayer(player: Player, map: GameMap, deltaX: number, deltaY: number): Player {
     const newX = player.position.x + deltaX;
@@ -42,9 +46,11 @@ export class GameEngineService {
     const isAdjacent = Math.max(dx, dy) <= 1;
 
     if (tile.gameObject?.interactable && isAdjacent && tile.gameObject.type === 'door') {
+      const doorPassword = this.mapService.getPasswordForMap(map.id) || 'default';
+
       const dialogRef = dialog.open(DoorComponent, {
         width: '400px',
-        data: { password: 'password' }
+        data: { password: doorPassword }
       });
 
       const unlocked: boolean = await new Promise((resolve) => {
@@ -59,10 +65,17 @@ export class GameEngineService {
         if (user) {
           const completionTime = timerComponent.elapsedTime;
           const mapRef = doc(db, 'users', user.uid, 'completedMaps', map.id);
-          await setDoc(mapRef, {
-            timeTaken: completionTime,
-            completedAt: new Date()
-          });
+
+          const existingDoc = await getDoc(mapRef);
+          const existingData: DocumentData | undefined = existingDoc.exists() ? existingDoc.data() : undefined;
+          const existingTime = existingData ? existingData['timeTaken'] : Infinity;
+
+          if (completionTime < existingTime) {
+            await setDoc(mapRef, {
+              timeTaken: completionTime,
+              completedAt: new Date()
+            });
+          }
         }
 
         alert('Level completed! Returning to map selection.');
