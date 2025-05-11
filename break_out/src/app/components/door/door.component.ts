@@ -30,7 +30,7 @@ export class DoorComponent {
 
   password: string;
   inputPassword: string = '';
-  output: string = 'Door locked. Enter password:';
+  output: string = 'Door locked. Enter the password:';
   showHint: boolean = false;
 
   constructor(

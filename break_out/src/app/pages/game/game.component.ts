@@ -1,16 +1,19 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MapService } from '../../services/map.service';
-import { PlayerService } from '../../services/player.service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
+
 import { GameMap } from '../../models/map.interface';
 import { Player } from '../../models/player.interface';
-import { TimerComponent } from '../../components/timer/timer.component';
 import { Tile } from '../../models/tile.interface';
-import { DoorComponent } from '../../components/door/door.component';
+
+import { MapService } from '../../services/map.service';
+import { PlayerService } from '../../services/player.service';
+import { GameEngineService } from '../../services/game-engine.service';
+
+import { TimerComponent } from '../../components/timer/timer.component';
 
 @Component({
   selector: 'app-game',
@@ -20,6 +23,9 @@ import { DoorComponent } from '../../components/door/door.component';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
+  @ViewChild(TimerComponent)
+  timerComponent!: TimerComponent;
+
   map!: GameMap;
   player!: Player;
   exitUnlocked: boolean = false;
@@ -29,8 +35,9 @@ export class GameComponent implements OnInit {
     private route: ActivatedRoute,
     private mapService: MapService,
     private playerService: PlayerService,
+    private gameEngine: GameEngineService,
     private dialog: MatDialog,
-    private router: Router // Added Router for navigation
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -69,44 +76,22 @@ export class GameComponent implements OnInit {
   }
 
   movePlayer(deltaX: number, deltaY: number): void {
-    const newX = this.player.position.x + deltaX;
-    const newY = this.player.position.y + deltaY;
-    if (this.map && this.map.grid[newY] && this.map.grid[newY][newX]) {
-      const targetTile = this.map.grid[newY][newX];
-      if (targetTile.passable) {
-        this.playerService.updatePosition(newX, newY);
-        this.player = this.playerService.getPlayer();
-      }
-    }
+    this.player = this.gameEngine.movePlayer(this.player, this.map, deltaX, deltaY);
   }
 
-  onTileClick(tile: Tile): void {
-    const dx = Math.abs(tile.x - this.player.position.x);
-    const dy = Math.abs(tile.y - this.player.position.y);
-    const isAdjacent = Math.max(dx, dy) === 1;
-
-    if (tile.gameObject?.interactable && isAdjacent) {
-      if (tile.gameObject.type === 'door') {
-        this.isComputerDialogOpen = true;
-        const dialogRef = this.dialog.open(DoorComponent, {
-          width: '400px',
-          data: { password: 'password' }
-        });
-
-        dialogRef.componentInstance.doorUnlocked.subscribe((unlocked: boolean) => {
-          if (unlocked) {
-            this.exitUnlocked = true;
-            console.log('Door unlocked!');
-            dialogRef.close(); 
-            alert('Level completed! Returning to map selection.');
-            this.router.navigate(['/map-selector']);
-          }
-        });
-
-        dialogRef.afterClosed().subscribe(() => {
-          this.isComputerDialogOpen = false;
-        });
-      }
+  async onTileClick(tile: Tile): Promise<void> {
+    this.isComputerDialogOpen = true;
+    const levelComplete = await this.gameEngine.handleTileClick(
+      tile,
+      this.player,
+      this.map,
+      this.timerComponent,
+      this.dialog,
+      this.router
+    );
+    if (levelComplete) {
+      this.exitUnlocked = true;
     }
+    this.isComputerDialogOpen = false;
   }
 }
