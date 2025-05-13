@@ -10,7 +10,7 @@ export class MapService {
   private mapPasswords: { [mapId: string]: string } = {
     map1: 'password',
     map2: 'forest42',
-    map3: 'sandstorm'
+    map3: 'sandstorm',
   };
 
   private createGrid(rows: number, cols: number): Tile[][] {
@@ -36,23 +36,53 @@ export class MapService {
       imageUrl: 'maps/cityscape.png',
       grid: (() => {
         const grid = this.createGrid(10, 10);
-        grid[0][9].gameObject = {
+        grid[8][9].gameObject = {
           id: 'door1',
           type: 'door',
           interactable: true,
-          avatarUrl: 'maps/door.webp', 
+          avatarUrl: 'maps/door.webp',
         };
+        for (let y = 0; y <= 2; y++) {
+          grid[y][3].passable = false;
+          grid[y][4].passable = false;
+          grid[y][5].passable = false;
+        }
+        for (let y = 6; y <= 9; y++) {
+          grid[y][3].passable = false;
+          grid[y][4].passable = false;
+          grid[y][5].passable = false;
+        }
+        for (let y = 2; y <= 5; y++) {
+          grid[y][7].passable = false;
+          grid[y][8].passable = false;
+          grid[y][9].passable = false;
+        }
         return grid;
       })(),
-      spawnPoint: { x: 0, y: 0 }, 
+      spawnPoint: { x: 0, y: 0 },
     },
     {
       id: 'map2',
-      name: 'Forest',
+      name: 'Citiscape 2',
       description: 'A mysterious forest level hiding secret challenges.',
-      imageUrl: 'maps/forest.png',
-      grid: this.createGrid(10, 10),
-      spawnPoint: { x: 0, y: 0 }, 
+      imageUrl: 'maps/lvl2.webp',
+      grid: (() => {
+        const grid = this.createGrid(10, 10);
+        grid[4][9].gameObject = {
+          id: 'door1',
+          type: 'door',
+          interactable: true,
+          avatarUrl: 'maps/door.webp',
+        };
+        for (let y = 3; y <= 6; y++) {
+          grid[y][2].passable = false;
+          grid[y][3].passable = false;
+          grid[y][4].passable = false;
+          grid[y][5].passable = false;
+        }
+        return grid;
+      })(),
+      spawnPoint: { x: 4, y: 0 },
     },
     {
       id: 'map3',
@@ -60,7 +90,7 @@ export class MapService {
       description: 'A sprawling desert level with hidden treasures.',
       imageUrl: '/maps/desert.png',
       grid: this.createGrid(10, 10),
-      spawnPoint: { x: 0, y: 0 }, 
+      spawnPoint: { x: 0, y: 0 },
     },
   ];
 
@@ -68,7 +98,7 @@ export class MapService {
     return of(this.maps);
   }
   getMapById(id: string): Observable<GameMap | undefined> {
-    const found = this.maps.find(m => m.id === id);
+    const found = this.maps.find((m) => m.id === id);
     return of(found);
   }
   getPasswordForMap(mapId: string): string | undefined {

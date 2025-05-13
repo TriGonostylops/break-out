@@ -20,7 +20,7 @@ import { TimerComponent } from '../../components/timer/timer.component';
   standalone: true,
   imports: [MatCardModule, CommonModule, MatIconModule, TimerComponent],
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit {
   @ViewChild(TimerComponent)
@@ -30,6 +30,7 @@ export class GameComponent implements OnInit {
   player!: Player;
   exitUnlocked: boolean = false;
   private isComputerDialogOpen = false;
+  backgroundImage!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +46,7 @@ export class GameComponent implements OnInit {
     this.mapService.getMapById(mapId).subscribe((map) => {
       if (map) {
         this.map = map;
+        this.backgroundImage = `url(${map.imageUrl})`;
       }
     });
     this.player = this.playerService.getPlayer();
@@ -76,7 +78,16 @@ export class GameComponent implements OnInit {
   }
 
   movePlayer(deltaX: number, deltaY: number): void {
-    this.player = this.gameEngine.movePlayer(this.player, this.map, deltaX, deltaY);
+    const targetX = this.player.position.x + deltaX;
+    const targetY = this.player.position.y + deltaY;
+    if (this.map.grid[targetY]?.[targetX]?.passable) {
+      this.player = this.gameEngine.movePlayer(
+        this.player,
+        this.map,
+        deltaX,
+        deltaY
+      );
+    }
   }
 
   async onTileClick(tile: Tile): Promise<void> {

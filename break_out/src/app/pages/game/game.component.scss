@@ -1,15 +1,16 @@
 .grid-container {
   display: flex;
   flex-direction: column;
-  gap: 5px;
   margin: 0 auto;
   max-width: 90vw;
   overflow-x: auto;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .grid-row {
   display: flex;
-  gap: 5px;
 }
 
 .grid-tile {
@@ -18,26 +19,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+  background-color: transparent;
   transition: transform 0.2s ease, background-color 0.2s ease;
-
-  &.passable {
-    background-color: #e0ffe0;
-  }
-
-  &.blocked {
-    background-color: #ffe0e0;
-  }
 
   &.interactable-tile {
     border: 2px solid #007bff;
     cursor: pointer;
-
-    &:hover {
-      transform: scale(1.1);
-      background-color: #d0f0ff;
-    }
   }
 }
 
