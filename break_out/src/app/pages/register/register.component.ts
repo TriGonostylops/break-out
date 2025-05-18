@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../firebase/firebase';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +29,7 @@ import { auth } from '../../../firebase/firebase';
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -47,6 +48,7 @@ export class RegisterComponent {
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, this.registerForm.value.email, this.registerForm.value.password);
         console.log('User registered:', userCredential.user);
+        this.router.navigate(['/']);
       } catch (error) {
         console.error('Registration error:', error);
       }
