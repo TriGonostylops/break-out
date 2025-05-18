@@ -47,9 +47,10 @@ export class GameComponent implements OnInit {
       if (map) {
         this.map = map;
         this.backgroundImage = `url(${map.imageUrl})`;
+        this.playerService.resetPlayer(map.spawnPoint);
+        this.player = this.playerService.getPlayer();
       }
     });
-    this.player = this.playerService.getPlayer();
   }
 
   @HostListener('window:keydown', ['$event'])
