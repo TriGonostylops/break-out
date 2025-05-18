@@ -51,7 +51,6 @@ export class GameEngineService {
     const dy = Math.abs(tile.y - player.position.y);
     const isAdjacent = Math.max(dx, dy) <= 1;
 
-    // Handle door interaction
     if (
       tile.gameObject?.interactable &&
       isAdjacent &&
@@ -77,9 +76,13 @@ export class GameEngineService {
 
         if (user) {
           const completionTime = timerComponent.elapsedTime;
-          const mapRef = doc(db, 'users', user.uid, 'completedMaps', map.id);
+          const leaderboardRef = doc(
+            db,
+            'leaderboard',
+            `${user.uid}_${map.id}` 
+          );
 
-          const existingDoc = await getDoc(mapRef);
+          const existingDoc = await getDoc(leaderboardRef);
           const existingData: DocumentData | undefined = existingDoc.exists()
             ? existingDoc.data()
             : undefined;
@@ -88,7 +91,10 @@ export class GameEngineService {
             : Infinity;
 
           if (completionTime < existingTime) {
-            await setDoc(mapRef, {
+            await setDoc(leaderboardRef, {
+              userId: user.uid,
+              userEmail: user.email, 
+              mapId: map.id,
               timeTaken: completionTime,
               completedAt: new Date(),
             });
