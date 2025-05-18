@@ -59,10 +59,11 @@ export class GameEngineService {
     ) {
       const doorPassword =
         this.mapService.getPasswordForMap(map.id) || 'default';
+      const doorClue = this.mapService.getDoorClueForMap(map.id) || '';
 
       const dialogRef = dialog.open(DoorComponent, {
         width: '400px',
-        data: { password: doorPassword },
+        data: { password: doorPassword, clue: doorClue },
       });
 
       const unlocked: boolean = await new Promise((resolve) => {

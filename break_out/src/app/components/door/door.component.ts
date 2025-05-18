@@ -29,14 +29,18 @@ export class DoorComponent {
   @Output() doorUnlocked: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   password: string;
+  clue: string;
   inputPassword: string = '';
   output: string = 'Door locked. Enter the password:';
   showHint: boolean = false;
 
   constructor(
-    @Optional() @Inject(MAT_DIALOG_DATA) private data: { password: string }
+    @Optional()
+    @Inject(MAT_DIALOG_DATA)
+    private data: { password: string; clue?: string }
   ) {
     this.password = data?.password || 'default';
+    this.clue = data?.clue || '';
   }
 
   verifyPassword(): void {

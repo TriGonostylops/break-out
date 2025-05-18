@@ -13,6 +13,11 @@ export class MapService {
     map3: 'sandstorm',
   };
 
+  private doorClues: { [mapId: string]: string } = {
+    map1: 'Enter (the) password.',
+    map2: 'Do you like riddles??',
+  };
+
   private noteMessages: { [mapId: string]: { [noteId: string]: string } } = {
     map1: {
       note1: 'Impostor is sus! Get through the door to escape.',
@@ -127,8 +132,10 @@ export class MapService {
   getPasswordForMap(mapId: string): string | undefined {
     return this.mapPasswords[mapId];
   }
+  getDoorClueForMap(mapId: string): string | undefined {
+    return this.doorClues[mapId];
+  }
 
-  // Retrieve note message by mapId and noteId
   getNoteMessage(mapId: string, noteId: string): string | undefined {
     return this.noteMessages[mapId]?.[noteId];
   }
