@@ -9,8 +9,18 @@ import { Tile } from '../models/tile.interface';
 export class MapService {
   private mapPasswords: { [mapId: string]: string } = {
     map1: 'password',
-    map2: 'forest42',
+    map2: 'impostor',
     map3: 'sandstorm',
+  };
+
+  private noteMessages: { [mapId: string]: { [noteId: string]: string } } = {
+    map1: {
+      note1: 'Impostor is sus! Get through the door to escape.',
+    },
+    map2: {
+      note2:
+        'In space we float, a task I fake.\nI wear many colors, my life\u2019s at stake.\nI act all chill, but I sabotage.\nGuess who I am \u2014 I\u2019m a total mirage.\nWho am I?',
+    },
   };
 
   private createGrid(rows: number, cols: number): Tile[][] {
@@ -21,7 +31,7 @@ export class MapService {
         row.push({
           x,
           y,
-          passable: true, // set false for walls or obstacles
+          passable: true,
         });
       }
       grid.push(row);
@@ -41,6 +51,13 @@ export class MapService {
           type: 'door',
           interactable: true,
           avatarUrl: 'maps/door.webp',
+        };
+        // Note at (2,2) - no message field
+        grid[2][2].gameObject = {
+          id: 'note1',
+          type: 'note',
+          interactable: true,
+          avatarUrl: 'maps/note.png',
         };
         for (let y = 0; y <= 2; y++) {
           grid[y][3].passable = false;
@@ -74,6 +91,12 @@ export class MapService {
           interactable: true,
           avatarUrl: 'maps/door.webp',
         };
+        grid[4][3].gameObject = {
+          id: 'note2',
+          type: 'note',
+          interactable: true,
+          avatarUrl: 'maps/note.png',
+        };
         for (let y = 3; y <= 6; y++) {
           grid[y][2].passable = false;
           grid[y][3].passable = false;
@@ -103,5 +126,10 @@ export class MapService {
   }
   getPasswordForMap(mapId: string): string | undefined {
     return this.mapPasswords[mapId];
+  }
+
+  // Retrieve note message by mapId and noteId
+  getNoteMessage(mapId: string, noteId: string): string | undefined {
+    return this.noteMessages[mapId]?.[noteId];
   }
 }

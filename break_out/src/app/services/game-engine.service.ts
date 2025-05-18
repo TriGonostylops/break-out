@@ -7,13 +7,14 @@ import { TimerComponent } from '../components/timer/timer.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DoorComponent } from '../components/door/door.component';
+import { NoteComponent } from '../components/note/note.component';
 import { getAuth } from 'firebase/auth';
 import { doc, setDoc, getDoc, DocumentData } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 import { MapService } from './map.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GameEngineService {
   constructor(
@@ -21,7 +22,12 @@ export class GameEngineService {
     private mapService: MapService
   ) {}
 
-  movePlayer(player: Player, map: GameMap, deltaX: number, deltaY: number): Player {
+  movePlayer(
+    player: Player,
+    map: GameMap,
+    deltaX: number,
+    deltaY: number
+  ): Player {
     const newX = player.position.x + deltaX;
     const newY = player.position.y + deltaY;
 
@@ -45,12 +51,18 @@ export class GameEngineService {
     const dy = Math.abs(tile.y - player.position.y);
     const isAdjacent = Math.max(dx, dy) <= 1;
 
-    if (tile.gameObject?.interactable && isAdjacent && tile.gameObject.type === 'door') {
-      const doorPassword = this.mapService.getPasswordForMap(map.id) || 'default';
+    // Handle door interaction
+    if (
+      tile.gameObject?.interactable &&
+      isAdjacent &&
+      tile.gameObject.type === 'door'
+    ) {
+      const doorPassword =
+        this.mapService.getPasswordForMap(map.id) || 'default';
 
       const dialogRef = dialog.open(DoorComponent, {
         width: '400px',
-        data: { password: doorPassword }
+        data: { password: doorPassword },
       });
 
       const unlocked: boolean = await new Promise((resolve) => {
@@ -67,13 +79,17 @@ export class GameEngineService {
           const mapRef = doc(db, 'users', user.uid, 'completedMaps', map.id);
 
           const existingDoc = await getDoc(mapRef);
-          const existingData: DocumentData | undefined = existingDoc.exists() ? existingDoc.data() : undefined;
-          const existingTime = existingData ? existingData['timeTaken'] : Infinity;
+          const existingData: DocumentData | undefined = existingDoc.exists()
+            ? existingDoc.data()
+            : undefined;
+          const existingTime = existingData
+            ? existingData['timeTaken']
+            : Infinity;
 
           if (completionTime < existingTime) {
             await setDoc(mapRef, {
               timeTaken: completionTime,
-              completedAt: new Date()
+              completedAt: new Date(),
             });
           }
         }
@@ -82,6 +98,21 @@ export class GameEngineService {
         router.navigate(['/map-selector']);
         return true;
       }
+    }
+
+    if (
+      tile.gameObject?.interactable &&
+      isAdjacent &&
+      tile.gameObject.type === 'note'
+    ) {
+      const noteId = tile.gameObject.id;
+      const noteMessage =
+        this.mapService.getNoteMessage(map.id, noteId) || 'No message found.';
+      dialog.open(NoteComponent, {
+        width: '350px',
+        data: { message: noteMessage },
+      });
+      return false;
     }
 
     return false;
