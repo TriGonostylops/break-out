@@ -1,0 +1,43 @@
+.leaderboard-card {
+  background: #333;
+  margin: 40px auto;
+  padding: 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18), 0 1.5px 4px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  width: 95%;
+}
+
+.leaderboard-title {
+  color: #fff;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.leaderboard-header-row {
+  background: #222;
+  color: #fff;
+}
+
+.leaderboard-header-cell {
+  padding: 10px 8px;
+  text-align: left;
+  font-weight: 500;
+}
+
+.leaderboard-row-even {
+  background: #383838;
+  color: #fff;
+}
+
+.leaderboard-row-odd {
+  background: #292929;
+  color: #fff;
+}
+
+.leaderboard-cell {
+  padding: 10px 8px;
+}

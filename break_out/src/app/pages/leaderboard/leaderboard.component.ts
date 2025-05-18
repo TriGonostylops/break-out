@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ScoreboardService, ScoreEntry } from '../../services/scoreboard.service';
 import { CommonModule } from '@angular/common';
+import { OrdinalPipe } from '../../pipes/ordinal.pipe';
 
 @Component({
   selector: 'app-leaderboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, OrdinalPipe],
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.scss'],
 })
