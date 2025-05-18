@@ -1,20 +1,42 @@
-<header>
-  <nav>
-    <a routerLink="/" class="logo-link">
-      <img src="logo_v1.webp" alt="Logo" class="logo" />
-      <span routerLinkActive="active"> {{ title }} </span>
-    </a>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="over" [opened]="false" class="mobile-sidenav">
     <ul>
-      <li routerLink="map-selector">Game</li>
-      <li *ngIf="isLoggedIn" routerLink="leaderboard">
+      <li routerLink="map-selector" (click)="sidenav.close()">Game</li>
+      <li *ngIf="isLoggedIn" routerLink="leaderboard" (click)="sidenav.close()">
         Leaderboard
       </li>
-      <li *ngIf="!isLoggedIn" routerLink="authenticate">
+      <li
+        *ngIf="!isLoggedIn"
+        routerLink="authenticate"
+        (click)="sidenav.close()"
+      >
         Authenticate
       </li>
-      <li *ngIf="isLoggedIn" (click)="logout()">
-        Logout
-      </li>
+      <li *ngIf="isLoggedIn" (click)="logout(); sidenav.close()">Logout</li>
     </ul>
-  </nav>
-</header>
+  </mat-sidenav>
+
+  <header>
+    <nav>
+      <a routerLink="/" class="logo-link">
+        <img src="logo_v1.webp" alt="Logo" class="logo" />
+        <span routerLinkActive="active"> {{ title }} </span>
+      </a>
+      <button
+        mat-icon-button
+        class="menu-btn"
+        *ngIf="isMobile"
+        (click)="sidenav.open()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <ul class="desktop-nav" *ngIf="!isMobile">
+      
+        <li routerLink="map-selector">Game</li>
+        <li *ngIf="isLoggedIn" routerLink="leaderboard">Leaderboard</li>
+        <li *ngIf="!isLoggedIn" routerLink="authenticate">Authenticate</li>
+        <li *ngIf="isLoggedIn" (click)="logout()">Logout</li>
+      </ul>
+    </nav>
+  </header>
+</mat-sidenav-container>
