@@ -1,4 +1,3 @@
-// filepath: c:\Users\Kriszti\Angular\break-out\break_out\src\app\guard\auth.guard.ts
 import { CanActivateFn, Router } from '@angular/router';
 import { auth } from '../../firebase/firebase';
 import { onAuthStateChanged } from 'firebase/auth';

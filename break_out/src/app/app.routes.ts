@@ -28,5 +28,12 @@ export const routes: Routes = [
         return import('./pages/game/game.component').then((m) => m.GameComponent);
     },
     canActivate: [authGuard],
+  },  
+  {
+    path: 'leaderboard',
+    loadComponent: () => {
+        return import('./pages/leaderboard/leaderboard.component').then((m) => m.LeaderboardComponent);
+    },
+    canActivate: [authGuard],
   },
 ];
