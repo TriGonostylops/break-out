@@ -40,7 +40,10 @@ export class ScoreboardService {
         results[mapId].push({
           userId: data['userId'] ?? 'unknown',
           userEmail: data['userEmail'] ?? 'unknown',
-          timeTaken: data['timeTaken'] ?? 0,
+          timeTaken:
+            typeof data['timeTaken'] === 'string'
+              ? data['timeTaken'].slice(0, -13)
+              : data['timeTaken'] ?? 0,
           completedAt: data['completedAt']?.toDate?.() ?? null,
         });
       });

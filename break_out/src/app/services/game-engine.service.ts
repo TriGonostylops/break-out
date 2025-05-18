@@ -95,7 +95,7 @@ export class GameEngineService {
               userId: user.uid,
               userEmail: user.email, 
               mapId: map.id,
-              timeTaken: completionTime,
+              timeTaken: Math.round(completionTime * 100) / 100,
               completedAt: new Date(),
             });
           }

@@ -18,7 +18,6 @@ export class LeaderboardComponent implements OnInit {
 
   async ngOnInit() {
     this.scores = await this.scoreboardService.getAllScores();
-    console.log('Scores loaded:', this.scores);
   }
 
   getSortedScores(mapId: string): ScoreEntry[] {
