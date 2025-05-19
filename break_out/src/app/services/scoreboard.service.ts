@@ -4,6 +4,12 @@ import {
   getDocs,
   QueryDocumentSnapshot,
   DocumentData,
+  query,
+  where,
+  orderBy,
+  limit,
+  startAfter,
+  Timestamp,
 } from 'firebase/firestore';
 import { db } from '../../firebase/firebase';
 
@@ -21,7 +27,6 @@ export class ScoreboardService {
     try {
       const leaderboardRef = collection(db, 'leaderboard');
       const snapshot = await getDocs(leaderboardRef);
-      console.log('Documents fetched:', snapshot.size);
 
       const results: { [mapId: string]: ScoreEntry[] } = {};
 
@@ -29,7 +34,6 @@ export class ScoreboardService {
         const data = doc.data();
         const mapId = data['mapId'] as string | undefined;
         if (!mapId) {
-          console.warn('Document missing mapId:', doc.id);
           return;
         }
 
@@ -50,8 +54,100 @@ export class ScoreboardService {
 
       return results;
     } catch (error) {
-      console.error('Error fetching leaderboard:', error);
       return {};
     }
+  }
+
+  async getTopScoresForMap(mapId: string, topN: number): Promise<ScoreEntry[]> {
+    const leaderboardRef = collection(db, 'leaderboard');
+    const q = query(
+      leaderboardRef,
+      where('mapId', '==', mapId),
+      orderBy('timeTaken', 'asc'),
+      limit(topN)
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        userId: data['userId'] ?? 'unknown',
+        userEmail: data['userEmail'] ?? 'unknown',
+        timeTaken: data['timeTaken'] ?? 0,
+        completedAt: data['completedAt']?.toDate?.() ?? null,
+      };
+    });
+  }
+
+  async getScoresForUser(userId: string): Promise<ScoreEntry[]> {
+    const leaderboardRef = collection(db, 'leaderboard');
+    const q = query(
+      leaderboardRef,
+      where('userId', '==', userId),
+      orderBy('completedAt', 'desc')
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        userId: data['userId'] ?? 'unknown',
+        userEmail: data['userEmail'] ?? 'unknown',
+        timeTaken: data['timeTaken'] ?? 0,
+        completedAt: data['completedAt']?.toDate?.() ?? null,
+      };
+    });
+  }
+
+  async getScoresAfterDate(date: Date): Promise<ScoreEntry[]> {
+    const leaderboardRef = collection(db, 'leaderboard');
+    const q = query(
+      leaderboardRef,
+      where('completedAt', '>', Timestamp.fromDate(date)),
+      orderBy('completedAt', 'asc')
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        userId: data['userId'] ?? 'unknown',
+        userEmail: data['userEmail'] ?? 'unknown',
+        timeTaken: data['timeTaken'] ?? 0,
+        completedAt: data['completedAt']?.toDate?.() ?? null,
+      };
+    });
+  }
+
+  async getPaginatedScoresForMap(
+    mapId: string,
+    pageSize: number,
+    lastTimeTaken?: number
+  ): Promise<ScoreEntry[]> {
+    const leaderboardRef = collection(db, 'leaderboard');
+    let q;
+    if (lastTimeTaken !== undefined) {
+      q = query(
+        leaderboardRef,
+        where('mapId', '==', mapId),
+        orderBy('timeTaken', 'asc'),
+        startAfter(lastTimeTaken),
+        limit(pageSize)
+      );
+    } else {
+      q = query(
+        leaderboardRef,
+        where('mapId', '==', mapId),
+        orderBy('timeTaken', 'asc'),
+        limit(pageSize)
+      );
+    }
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        userId: data['userId'] ?? 'unknown',
+        userEmail: data['userEmail'] ?? 'unknown',
+        timeTaken: data['timeTaken'] ?? 0,
+        completedAt: data['completedAt']?.toDate?.() ?? null,
+      };
+    });
   }
 }

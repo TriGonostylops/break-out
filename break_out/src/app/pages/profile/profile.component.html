@@ -1,51 +1,54 @@
 <mat-card>
   <mat-card-title>Profile</mat-card-title>
   <mat-card-content>
-    <div><strong>Current Email:</strong> {{ user?.email }}</div>
-    <form
-      [formGroup]="emailForm"
-      (ngSubmit)="onUpdateEmail()"
-      style="margin-top: 1rem"
-    >
-      <mat-form-field appearance="fill" style="width: 100%">
-        <mat-label>New Email</mat-label>
-        <input matInput formControlName="email" type="email" required />
-      </mat-form-field>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="emailForm.invalid"
-      >
-        Update Email
+    <div class="profile-section">
+      <h3 class="section-title">Email</h3>
+      <form [formGroup]="emailForm" (ngSubmit)="onUpdateEmail()">
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>New Email</mat-label>
+          <input matInput formControlName="email" type="email" required />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="emailForm.invalid"
+        >
+          Update Email
+        </button>
+      </form>
+    </div>
+
+    <div class="profile-section">
+      <h3 class="section-title">Password</h3>
+      <form [formGroup]="passwordForm" (ngSubmit)="onUpdatePassword()">
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>New Password</mat-label>
+          <input matInput formControlName="password" type="password" required />
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            type="password"
+            required
+          />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+        >
+          Update Password
+        </button>
+      </form>
+    </div>
+
+    <div class="profile-section danger">
+      <button mat-raised-button color="warn" (click)="onDeleteAccount()">
+        Delete Account
       </button>
-    </form>
-    <form
-      [formGroup]="passwordForm"
-      (ngSubmit)="onUpdatePassword()"
-      style="margin-top: 2rem"
-    >
-      <mat-form-field appearance="fill" style="width: 100%">
-        <mat-label>New Password</mat-label>
-        <input matInput formControlName="password" type="password" required />
-      </mat-form-field>
-      <mat-form-field appearance="fill" style="width: 100%">
-        <mat-label>Confirm Password</mat-label>
-        <input
-          matInput
-          formControlName="confirmPassword"
-          type="password"
-          required
-        />
-      </mat-form-field>
-      <button
-        mat-raised-button
-        color="accent"
-        type="submit"
-        [disabled]="passwordForm.invalid"
-      >
-        Update Password
-      </button>
-    </form>
+    </div>
   </mat-card-content>
 </mat-card>

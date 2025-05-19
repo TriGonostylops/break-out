@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { auth } from '../../../firebase/firebase';
-import { updateEmail, updatePassword, User } from 'firebase/auth';
+import { updateEmail, updatePassword, User,deleteUser } from 'firebase/auth';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -84,6 +84,30 @@ export class ProfileComponent {
           'Close',
           { duration: 4000 }
         );
+      }
+    }
+  }
+
+  async onDeleteAccount() {
+    if (this.user) {
+      if (
+        confirm(
+          'Are you sure you want to delete your account? This action cannot be undone.'
+        )
+      ) {
+        try {
+          await deleteUser(this.user);
+          this.snackBar.open('Account deleted successfully', 'Close', {
+            duration: 3000,
+          });
+          // Optionally, redirect or update UI here
+        } catch (error: any) {
+          this.snackBar.open(
+            'Failed to delete account: ' + error.message,
+            'Close',
+            { duration: 4000 }
+          );
+        }
       }
     }
   }
