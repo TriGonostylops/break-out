@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { OrdinalPipe } from '../../pipes/ordinal.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { auth } from '../../../firebase/firebase';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-leaderboard',
   standalone: true,
-  imports: [CommonModule, OrdinalPipe, MatCardModule],
+  imports: [CommonModule, OrdinalPipe, MatCardModule, MatTabsModule],
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.scss'],
 })

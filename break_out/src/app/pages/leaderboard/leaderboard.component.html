@@ -1,107 +1,113 @@
-<mat-card *ngFor="let mapId of mapIds" class="leaderboard-card">
-  <h2 class="leaderboard-title">Map: {{ mapId }}</h2>
-  <table class="leaderboard-table">
-    <thead>
-      <tr class="leaderboard-header-row">
-        <th class="leaderboard-header-cell">Rank</th>
-        <th class="leaderboard-header-cell">User</th>
-        <th class="leaderboard-header-cell">Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let score of getSortedScores(mapId); let i = index"
-        [ngClass]="i % 2 === 0 ? 'leaderboard-row-even' : 'leaderboard-row-odd'"
-      >
-        <td class="leaderboard-cell">{{ i + 1 | ordinal }}</td>
-        <td class="leaderboard-cell">
-          {{ score.userEmail }}
-        </td>
-        <td class="leaderboard-cell">{{ score.timeTaken }}</td>
-      </tr>
-    </tbody>
-  </table>
-</mat-card>
+<mat-tab-group mat-stretch-tabs>
+  <!-- Tab: All Scores -->
+  <mat-tab label="All Scores">
+    <ng-container *ngFor="let mapId of mapIds">
+      <mat-card class="leaderboard-card">
+        <h2 class="leaderboard-title">Map: {{ mapId }}</h2>
+        <table class="leaderboard-table">
+          <thead>
+            <tr class="leaderboard-header-row">
+              <th class="leaderboard-header-cell">Rank</th>
+              <th class="leaderboard-header-cell">User</th>
+              <th class="leaderboard-header-cell">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let score of getSortedScores(mapId); let i = index"
+              [ngClass]="i % 2 === 0 ? 'leaderboard-row-even' : 'leaderboard-row-odd'"
+            >
+              <td class="leaderboard-cell">{{ i + 1 | ordinal }}</td>
+              <td class="leaderboard-cell">{{ score.userEmail }}</td>
+              <td class="leaderboard-cell">{{ score.timeTaken }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card>
+    </ng-container>
+  </mat-tab>
 
-<!-- Top N scores for a selected map -->
-<mat-card class="leaderboard-card" *ngIf="topScores && topScores.length">
-  <h2 class="leaderboard-title">
-    Top {{ topN }} Scores for Map: {{ selectedMapId }}
-  </h2>
-  <table class="leaderboard-table">
-    <thead>
-      <tr class="leaderboard-header-row">
-        <th class="leaderboard-header-cell">Rank</th>
-        <th class="leaderboard-header-cell">User</th>
-        <th class="leaderboard-header-cell">Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let score of topScores; let i = index"
-        [ngClass]="i % 2 === 0 ? 'leaderboard-row-even' : 'leaderboard-row-odd'"
-      >
-        <td class="leaderboard-cell">{{ i + 1 | ordinal }}</td>
-        <td class="leaderboard-cell">{{ score.userEmail }}</td>
-        <td class="leaderboard-cell">{{ score.timeTaken }}</td>
-      </tr>
-    </tbody>
-  </table>
-</mat-card>
+  <!-- Tab: Top N Scores -->
+  <mat-tab label="Top {{ topN }}">
+    <mat-card class="leaderboard-card" *ngIf="topScores && topScores.length">
+      <h2 class="leaderboard-title">
+        Top {{ topN }} Scores for Map: {{ selectedMapId }}
+      </h2>
+      <table class="leaderboard-table">
+        <thead>
+          <tr class="leaderboard-header-row">
+            <th class="leaderboard-header-cell">Rank</th>
+            <th class="leaderboard-header-cell">User</th>
+            <th class="leaderboard-header-cell">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let score of topScores; let i = index"
+            [ngClass]="i % 2 === 0 ? 'leaderboard-row-even' : 'leaderboard-row-odd'"
+          >
+            <td class="leaderboard-cell">{{ i + 1 | ordinal }}</td>
+            <td class="leaderboard-cell">{{ score.userEmail }}</td>
+            <td class="leaderboard-cell">{{ score.timeTaken }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </mat-tab>
 
-<!-- All scores for a user -->
-<mat-card class="leaderboard-card" *ngIf="userScores && userScores.length">
-  <h2 class="leaderboard-title">
-    Your Scores<span *ngIf="currentUserEmail"> ({{ currentUserEmail }})</span>
-  </h2>
-  <table class="leaderboard-table">
-    <thead>
-      <tr class="leaderboard-header-row">
-        <th class="leaderboard-header-cell">Map</th>
-        <th class="leaderboard-header-cell">Time</th>
-        <th class="leaderboard-header-cell">Completed At</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let score of userScores; let i = index"
-        [ngClass]="i % 2 === 0 ? 'leaderboard-row-even' : 'leaderboard-row-odd'"
-      >
-        <td class="leaderboard-cell">{{ score.mapId || "-" }}</td>
-        <td class="leaderboard-cell">{{ score.timeTaken }}</td>
-        <td class="leaderboard-cell">
-          {{ score.completedAt | date : "short" }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</mat-card>
+  <!-- Tab: User Scores -->
+  <mat-tab label="Your Scores">
+    <mat-card class="leaderboard-card" *ngIf="userScores && userScores.length">
+      <h2 class="leaderboard-title">
+        Your Scores<span *ngIf="currentUserEmail"> ({{ currentUserEmail }})</span>
+      </h2>
+      <table class="leaderboard-table">
+        <thead>
+          <tr class="leaderboard-header-row">
+            <th class="leaderboard-header-cell">Map</th>
+            <th class="leaderboard-header-cell">Time</th>
+            <th class="leaderboard-header-cell">Completed At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let score of userScores; let i = index"
+            [ngClass]="i % 2 === 0 ? 'leaderboard-row-even' : 'leaderboard-row-odd'"
+          >
+            <td class="leaderboard-cell">{{ score.mapId || "-" }}</td>
+            <td class="leaderboard-cell">{{ score.timeTaken }}</td>
+            <td class="leaderboard-cell">{{ score.completedAt | date : "short" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </mat-tab>
 
-<!-- Scores after a certain date -->
-<mat-card
-  class="leaderboard-card"
-  *ngIf="scoresAfterDate && scoresAfterDate.length"
->
-  <h2 class="leaderboard-title">
-    Scores After {{ afterDate | date : "shortDate" }}
-  </h2>
-  <table class="leaderboard-table">
-    <thead>
-      <tr class="leaderboard-header-row">
-        <th class="leaderboard-header-cell">User</th>
-        <th class="leaderboard-header-cell">Map</th>
-        <th class="leaderboard-header-cell">Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let score of scoresAfterDate; let i = index"
-        [ngClass]="i % 2 === 0 ? 'leaderboard-row-even' : 'leaderboard-row-odd'"
-      >
-        <td class="leaderboard-cell">{{ score.userEmail }}</td>
-        <td class="leaderboard-cell">{{ score.mapId || "-" }}</td>
-        <td class="leaderboard-cell">{{ score.timeTaken }}</td>
-      </tr>
-    </tbody>
-  </table>
-</mat-card>
+  <!-- Tab: Recent Scores -->
+  <mat-tab label="Recent Scores">
+    <mat-card class="leaderboard-card" *ngIf="scoresAfterDate && scoresAfterDate.length">
+      <h2 class="leaderboard-title">
+        Scores After {{ afterDate | date : "shortDate" }}
+      </h2>
+      <table class="leaderboard-table">
+        <thead>
+          <tr class="leaderboard-header-row">
+            <th class="leaderboard-header-cell">User</th>
+            <th class="leaderboard-header-cell">Map</th>
+            <th class="leaderboard-header-cell">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let score of scoresAfterDate; let i = index"
+            [ngClass]="i % 2 === 0 ? 'leaderboard-row-even' : 'leaderboard-row-odd'"
+          >
+            <td class="leaderboard-cell">{{ score.userEmail }}</td>
+            <td class="leaderboard-cell">{{ score.mapId || "-" }}</td>
+            <td class="leaderboard-cell">{{ score.timeTaken }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>
