@@ -91,7 +91,6 @@
         <th class="leaderboard-header-cell">User</th>
         <th class="leaderboard-header-cell">Map</th>
         <th class="leaderboard-header-cell">Time</th>
-        <th class="leaderboard-header-cell">Completed At</th>
       </tr>
     </thead>
     <tbody>
@@ -102,9 +101,6 @@
         <td class="leaderboard-cell">{{ score.userEmail }}</td>
         <td class="leaderboard-cell">{{ score.mapId || "-" }}</td>
         <td class="leaderboard-cell">{{ score.timeTaken }}</td>
-        <td class="leaderboard-cell">
-          {{ score.completedAt | date : "short" }}
-        </td>
       </tr>
     </tbody>
   </table>

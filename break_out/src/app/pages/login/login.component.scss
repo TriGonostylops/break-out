@@ -15,7 +15,6 @@ mat-card {
 
 mat-card-title {
   font-size: 2rem;
-  font-weight: bold;
   text-align: center;
   margin-bottom: 1rem;
 }
@@ -32,37 +31,33 @@ mat-form-field {
 
 .actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 1rem;
   margin-top: 1rem;
 }
 
-.login-button {
-  background-color: #4caf50;
-  color: white;
-  font-weight: bold;
-  border-radius: 50px;
-  padding: 0.5rem 2rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+button[mat-flat-button],
+button[mat-stroked-button] {
+  min-width: 100px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: none;
+  box-shadow: none;
 }
 
-.reset-button {
-  color: #f44336;
-  font-weight: bold;
-  border-radius: 50px;
-  padding: 0.5rem 2rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
+.switch-link {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #ccc;
 
-.login-button:hover,
-.reset-button:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: scale(1.05);
-}
-
-.login-button:active,
-.reset-button:active {
-  transform: scale(0.95);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  a {
+    color: #90caf9;
+    text-decoration: underline;
+    margin-left: 0.5em;
+    cursor: pointer;
+    font-weight: 500;
+  }
 }
 
 .card {

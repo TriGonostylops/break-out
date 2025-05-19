@@ -9,9 +9,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../firebase/firebase';
 import { Router } from '@angular/router';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +24,7 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatSnackBarModule, // Add MatSnackBarModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
@@ -29,7 +32,11 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private snackBar: MatSnackBar // Inject MatSnackBar
+  ) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -39,19 +46,30 @@ export class RegisterComponent {
 
   async onRegister() {
     if (this.registerForm.valid) {
-      console.log('Register data:', this.registerForm.value);
-      if(this.registerForm.value.password !== this.registerForm.value.confirmPassword) {
-        console.error('Passwords do not match');
+      if (
+        this.registerForm.value.password !==
+        this.registerForm.value.confirmPassword
+      ) {
+        this.snackBar.open('Passwords do not match', 'Close', {
+          duration: 3000,
+        });
         return;
       }
 
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, this.registerForm.value.email, this.registerForm.value.password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          this.registerForm.value.email,
+          this.registerForm.value.password
+        );
         console.log('User registered:', userCredential.user);
         this.router.navigate(['/']);
-      } catch (error) {
-        console.error('Registration error:', error);
+      } catch (error: any) {
+        this.snackBar.open(error?.message || 'Registration error', 'Close', {
+          duration: 4000,
+        });
       }
     }
   }
+  @Output() switchToLogin = new EventEmitter<void>();
 }

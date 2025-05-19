@@ -1,20 +1,10 @@
 <mat-card class="auth-card">
-  <mat-card-actions class="auth-actions">
-    <button
-      mat-raised-button
-      color="accent"
-      class="switch-button"
-      (click)="toggleView()"
-    >
-      Switch to {{ showLogin ? "Register" : "Login" }}
-    </button>
-  </mat-card-actions>
   <div class="auth-content">
     <ng-container *ngIf="showLogin; else registerBlock">
-      <app-login></app-login>
+      <app-login (switchToRegister)="toggleView()"></app-login>
     </ng-container>
     <ng-template #registerBlock>
-      <app-register></app-register>
+      <app-register (switchToLogin)="toggleView()"></app-register>
     </ng-template>
   </div>
 </mat-card>
