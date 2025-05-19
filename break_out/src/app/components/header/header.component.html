@@ -5,6 +5,9 @@
       <li *ngIf="isLoggedIn" routerLink="leaderboard" (click)="sidenav.close()">
         Leaderboard
       </li>
+      <li *ngIf="isLoggedIn" routerLink="profile" (click)="sidenav.close()">
+        Profile
+      </li>
       <li
         *ngIf="!isLoggedIn"
         routerLink="authenticate"
@@ -31,9 +34,9 @@
         <mat-icon>menu</mat-icon>
       </button>
       <ul class="desktop-nav" *ngIf="!isMobile">
-      
         <li routerLink="map-selector">Game</li>
         <li *ngIf="isLoggedIn" routerLink="leaderboard">Leaderboard</li>
+        <li *ngIf="isLoggedIn" routerLink="profile">Profile</li>
         <li *ngIf="!isLoggedIn" routerLink="authenticate">Authenticate</li>
         <li *ngIf="isLoggedIn" (click)="logout()">Logout</li>
       </ul>
