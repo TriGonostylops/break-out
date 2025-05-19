@@ -10,8 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { auth } from '../../../firebase/firebase';
-import { updateEmail, updatePassword, User,deleteUser } from 'firebase/auth';
+import { UserService } from '../../services/user.service';
+import { User } from 'firebase/auth';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -30,11 +30,16 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent {
-  user: User | null = auth.currentUser;
+  user: User | null;
   emailForm: FormGroup;
   passwordForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {
+  constructor(
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private userService: UserService
+  ) {
+    this.user = this.userService.getCurrentUser();
     this.emailForm = this.fb.group({
       email: [this.user?.email || '', [Validators.required, Validators.email]],
     });
@@ -45,9 +50,9 @@ export class ProfileComponent {
   }
 
   async onUpdateEmail() {
-    if (this.emailForm.valid && this.user) {
+    if (this.emailForm.valid) {
       try {
-        await updateEmail(this.user, this.emailForm.value.email);
+        await this.userService.updateUserEmail(this.emailForm.value.email);
         this.snackBar.open('Email updated successfully', 'Close', {
           duration: 3000,
         });
@@ -62,7 +67,7 @@ export class ProfileComponent {
   }
 
   async onUpdatePassword() {
-    if (this.passwordForm.valid && this.user) {
+    if (this.passwordForm.valid) {
       if (
         this.passwordForm.value.password !==
         this.passwordForm.value.confirmPassword
@@ -73,7 +78,9 @@ export class ProfileComponent {
         return;
       }
       try {
-        await updatePassword(this.user, this.passwordForm.value.password);
+        await this.userService.updateUserPassword(
+          this.passwordForm.value.password
+        );
         this.snackBar.open('Password updated successfully', 'Close', {
           duration: 3000,
         });
@@ -89,25 +96,22 @@ export class ProfileComponent {
   }
 
   async onDeleteAccount() {
-    if (this.user) {
-      if (
-        confirm(
-          'Are you sure you want to delete your account? This action cannot be undone.'
-        )
-      ) {
-        try {
-          await deleteUser(this.user);
-          this.snackBar.open('Account deleted successfully', 'Close', {
-            duration: 3000,
-          });
-          // Optionally, redirect or update UI here
-        } catch (error: any) {
-          this.snackBar.open(
-            'Failed to delete account: ' + error.message,
-            'Close',
-            { duration: 4000 }
-          );
-        }
+    if (
+      confirm(
+        'Are you sure you want to delete your account? This action cannot be undone.'
+      )
+    ) {
+      try {
+        await this.userService.deleteCurrentUser();
+        this.snackBar.open('Account deleted successfully', 'Close', {
+          duration: 3000,
+        });
+      } catch (error: any) {
+        this.snackBar.open(
+          'Failed to delete account: ' + error.message,
+          'Close',
+          { duration: 4000 }
+        );
       }
     }
   }
